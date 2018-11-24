@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 
 import './App.css';
 import ToDoList from './components/ToDoList';
 import reducer from './store/reducer';
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const logger = store => {
     return next => {
@@ -17,7 +19,7 @@ const logger = store => {
     };
 };
 
-const store = createStore(reducer, applyMiddleware(logger));
+const store = createStore(reducer, composeEnhancers(applyMiddleware(logger)));
 
 class App extends Component {
     render() {
