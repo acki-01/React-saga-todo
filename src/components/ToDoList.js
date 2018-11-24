@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import ToDo from './ToDo';
-import * as actionTypes from '../store/actions/action';
+import * as toDoActions from '../store/actions/todo';
 
 class ToDoList extends Component {
     state = {
@@ -64,12 +64,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onToDoAdded: newToDo =>
-            dispatch({ type: actionTypes.ADD_TODO, newToDo }),
-        onMarkAsDoneToDo: toDoKey =>
-            dispatch({ type: actionTypes.MARK_AS_DONE_TODO, toDoKey }),
-        onToDoRemoved: toDoKey =>
-            dispatch({ type: actionTypes.REMOVE_TODO, toDoKey })
+        onToDoAdded: newToDo => dispatch(toDoActions.addToDo(newToDo)),
+        onMarkAsDoneToDo: toDoKey => dispatch(toDoActions.markAsDone(toDoKey)),
+        onToDoRemoved: toDoKey => dispatch(toDoActions.removeToDo(toDoKey))
     };
 };
 

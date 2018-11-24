@@ -1,0 +1,6 @@
+export const ADD_TODO = 'ADD_TODO';
+export const REMOVE_TODO = 'REMOVE_TODO';
+export const MARK_AS_DONE_TODO = 'MARK_AS_DONE_TODO';
+export const INIT_ADD_TODO = 'INIT_ADD_TODO';
+export const INIT_REMOVE_TODO = 'INIT_REMOVE_TODO';
+export const INIT_MARK_AS_DONE_TODO = 'INIT_MARK_AS_DONE_TODO';

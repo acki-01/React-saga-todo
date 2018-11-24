@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
+import createSagaMiddleware from 'redux-saga';
 
 import './App.css';
 import ToDoList from './components/ToDoList';
 import reducer from './store/reducers/todo';
+import { watchToDo } from './store/sagas';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -19,7 +21,14 @@ const logger = store => {
     };
 };
 
-const store = createStore(reducer, composeEnhancers(applyMiddleware(logger)));
+const sagaMiddleware = createSagaMiddleware();
+
+const store = createStore(
+    reducer,
+    composeEnhancers(applyMiddleware(logger, sagaMiddleware))
+);
+
+sagaMiddleware.run(watchToDo);
 
 class App extends Component {
     render() {

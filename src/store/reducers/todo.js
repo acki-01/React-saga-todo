@@ -1,4 +1,4 @@
-import * as actionTypes from '../actions/action';
+import * as actionTypes from '../actions/constants';
 
 const initialState = {
     todos: []
@@ -7,6 +7,7 @@ const initialState = {
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.ADD_TODO:
+            console.log(action);
             return {
                 ...state,
                 todos: [...state.todos, action.newToDo]
