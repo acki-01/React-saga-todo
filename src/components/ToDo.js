@@ -7,7 +7,13 @@ const ToDo = ({ text, complete, remove, done }) => (
                 {text}
             </span>
             <button onClick={remove}>Remove</button>
-            <input type="checkbox" value="Done" onChange={complete} />
+            <label htmlFor="isDone">Done: </label>
+            <input
+                type="checkbox"
+                value="Done"
+                id="isDone"
+                onChange={complete}
+            />
         </li>
     </>
 );
