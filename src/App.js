@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 
 import './App.css';
 import ToDoList from './components/ToDoList';
-import reducer from './store/reducer';
+import reducer from './store/reducers/todo';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

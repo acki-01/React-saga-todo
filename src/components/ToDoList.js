@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import ToDo from './ToDo';
-import * as actionTypes from '../store/actions';
+import * as actionTypes from '../store/actions/action';
 
 class ToDoList extends Component {
     state = {
