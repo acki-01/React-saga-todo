@@ -6,7 +6,6 @@ import * as actionTypes from '../store/actions';
 
 class ToDoList extends Component {
     state = {
-        todo: { text: '', key: '', done: false },
         text: ''
     };
     get taskToComplete() {
@@ -60,8 +59,7 @@ class ToDoList extends Component {
 
 const mapStateToProps = state => {
     return {
-        todos: state.todos,
-        todo: state.todo
+        todos: state.todos
     };
 };
 
