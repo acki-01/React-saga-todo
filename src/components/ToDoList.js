@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import ToDo from './ToDo';
+import * as actionTypes from '../store/actions';
 
-export default class ToDoList extends Component {
+class ToDoList extends Component {
     state = {
-        todos: [],
-        todo: { text: '', key: '', done: false }
+        todo: { text: '', key: '', done: false },
+        text: ''
     };
     get taskToComplete() {
-        return this.state.todos.filter(({ done }) => !done).length;
+        return this.props.todos.filter(({ done }) => !done).length;
     }
     completeHandler = key => {
-        const updatedItems = this.state.todos.map(todo => {
+        const updatedItems = this.props.todos.map(todo => {
             if (todo.key === key) {
                 todo.done = true;
             }
@@ -20,31 +22,27 @@ export default class ToDoList extends Component {
         this.setState({ todos: updatedItems });
     };
     removeHandler = key => {
-        const todos = this.state.todos.filter(todo => todo.key !== key);
+        const todos = this.props.todos.filter(todo => todo.key !== key);
         this.setState({ todos });
     };
     onInputChangeHandler = e => {
-        const todo = { text: e.target.value, id: Date.now(), done: false };
-        this.setState({ todo });
+        const { value } = e.target;
+        this.setState({ text: value });
     };
-    addToDoHandler = e => {
-        e.preventDefault();
-        const newTodo = this.state.todo;
-        if (newTodo.text !== '' || this.taskToComplete < 10) {
-            const items = [...this.state.todos, newTodo];
-            this.setState({
-                todos: items,
-                todo: { text: '', key: '', done: false }
-            });
+    addToDoHandler = () => {
+        const newToDo = { text: this.state.text, key: Date.now(), done: false };
+        console.log(newToDo);
+        if (newToDo.text !== '' || this.taskToComplete < 10) {
+            this.props.onToDoAdded(newToDo);
         }
     };
     render() {
-        const todos = this.state.todos.map(({ text, key, done }) => (
+        const todos = this.props.todos.map(({ text, key, done }) => (
             <ToDo
                 key={key}
                 text={text}
-                complete={() => this.completeHandler(key)}
-                remove={() => this.removeHandler(key)}
+                complete={() => this.props.onMarkAsDoneToDo(key)}
+                remove={() => this.props.onToDoRemoved(key)}
                 done={done}
             />
         ));
@@ -59,3 +57,26 @@ export default class ToDoList extends Component {
         );
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        todos: state.todos,
+        todo: state.todo
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onToDoAdded: newToDo =>
+            dispatch({ type: actionTypes.ADD_TODO, newToDo }),
+        onMarkAsDoneToDo: toDoKey =>
+            dispatch({ type: actionTypes.MARK_AS_DONE_TODO, toDoKey }),
+        onToDoRemoved: toDoKey =>
+            dispatch({ type: actionTypes.REMOVE_TODO, toDoKey })
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ToDoList);
