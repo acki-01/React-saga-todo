@@ -30,7 +30,6 @@ class ToDoList extends Component {
     };
     addToDoHandler = () => {
         const newToDo = { text: this.state.text, key: Date.now(), done: false };
-        console.log(newToDo);
         if (newToDo.text !== '' || this.taskToComplete < 10) {
             this.props.onToDoAdded(newToDo);
         }
