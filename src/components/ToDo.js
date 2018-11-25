@@ -27,6 +27,21 @@ const StyledButton = styled.button`
     }
 `;
 
+const StyledHideableButton = styled.button`
+    width: 70px;
+    height: 24px;
+    visibility: ${({ done }) => (done ? 'visible' : 'hidden')};
+    background: white;
+    border-radius: 50px;
+    color: mediumaquamarine;
+    font-weight: bold;
+
+    :disabled {
+        background: lightgrey;
+        color: white;
+    }
+`;
+
 const StyledSpan = styled.span`
     display: inline-block;
     overflow: hidden;
@@ -45,14 +60,12 @@ const ToDo = ({ text, complete, remove, done }) => {
     const buttonLabel = done ? 'Undone' : 'Done';
     return (
         <StyledToDo>
-            <StyledSpan
-                style={{ textDecoration: done ? 'line-through' : 'none' }}
-            >
-                {text}
-            </StyledSpan>
+            <StyledSpan done={done}>{text}</StyledSpan>
             <StyledButtonContainer>
                 <StyledButton onClick={complete}>{buttonLabel}</StyledButton>
-                <StyledButton onClick={remove}>Remove</StyledButton>
+                <StyledHideableButton done={done} onClick={remove}>
+                    Remove
+                </StyledHideableButton>
             </StyledButtonContainer>
         </StyledToDo>
     );
