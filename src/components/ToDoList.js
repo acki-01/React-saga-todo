@@ -1,8 +1,51 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
 
 import ToDo from './ToDo';
 import * as toDoActions from '../store/actions/todo';
+
+const StyledToDoList = styled.div`
+    width: 500px;
+    max-width: 500px;
+    padding: 10px;
+    background: mediumslateblue;
+    text-align: center;
+`;
+
+const StyledInput = styled.input`
+    width: 200px;
+    height: 30px;
+    padding-left: 20px;
+    margin-right: 20px;
+    border-radius: 50px;
+    color: mediumaquamarine;
+    font-weight: bold;
+`;
+
+const StyledButton = styled.button`
+    width: 80px;
+    height: 30px;
+    background: white;
+    border-radius: 50px;
+    color: mediumaquamarine;
+    font-weight: bold;
+
+    :disabled {
+        background: lightgrey;
+        color: white;
+    }
+`;
+
+const StyledList = styled.ul`
+    height: 422px;
+    padding: 0px;
+    border: 2px solid black;
+`;
+
+const StyledH2 = styled.h2`
+    margin-top: 0px;
+`;
 
 class ToDoList extends Component {
     state = {
@@ -36,6 +79,7 @@ class ToDoList extends Component {
             this.props.onToDoAdded(newToDo);
         }
     };
+
     render() {
         const todos = this.props.todos.map(({ text, key, done }) => (
             <ToDo
@@ -47,20 +91,20 @@ class ToDoList extends Component {
             />
         ));
         return (
-            <>
-                <h3>ToDo List</h3>
-                <h2>Task to complete: {this.taskToComplete}</h2>
-                <input onChange={this.onInputChangeHandler} />
-                <button
+            <StyledToDoList>
+                <StyledH2>ToDo List</StyledH2>
+                <h3>Task to complete: {this.props.taskToComplete}</h3>
+                <StyledInput onChange={this.onInputChangeHandler} />
+                <StyledButton
                     onClick={this.addToDoHandler}
                     disabled={
                         this.props.buttonDisabled || this.props.isFullList
                     }
                 >
                     ADD
-                </button>
-                <ul>{todos}</ul>
-            </>
+                </StyledButton>
+                <StyledList>{todos}</StyledList>
+            </StyledToDoList>
         );
     }
 }
@@ -68,8 +112,9 @@ class ToDoList extends Component {
 const mapStateToProps = state => {
     return {
         todos: state.todos,
-        isFullList: state.todos.filter(({ done }) => !done).length >= 10,
-        buttonDisabled: state.buttonDisabled
+        isFullList: state.todos.length >= 10,
+        buttonDisabled: state.buttonDisabled,
+        taskToComplete: state.todos.filter(({ done }) => !done).length
     };
 };
 
