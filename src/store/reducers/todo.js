@@ -1,13 +1,7 @@
 import * as actionTypes from '../actions/constants';
 
 const initialState = {
-    todos: [
-        {
-            text: 'sdadsasdadsasddasdasdasdasdasddsadas',
-            key: Date.now(),
-            done: false
-        }
-    ],
+    todos: [],
     buttonDisabled: false
 };
 
