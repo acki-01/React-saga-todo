@@ -27,7 +27,7 @@ class ToDoList extends Component {
     };
     addToDoHandler = () => {
         const { text } = this.state;
-        if (text !== '' && !this.props.isFullList) {
+        if (text.trim() !== '' && !this.props.isFullList) {
             const newToDo = {
                 text,
                 key: Date.now(),

@@ -12,12 +12,12 @@ export function* addToDoSaga(action) {
 
 export function* removeToDoSaga(action) {
     const { toDoKey } = action;
-    yield delay(500);
+    yield delay(200);
     yield put(actions.removeToDo(toDoKey));
 }
 
 export function* markAsDoneSaga(action) {
     const { toDoKey } = action;
-    yield delay(500);
+    yield delay(200);
     yield put(actions.markAsDone(toDoKey));
 }
