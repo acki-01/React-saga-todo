@@ -8,9 +8,6 @@ class ToDoList extends Component {
     state = {
         text: ''
     };
-    get taskToComplete() {
-        return this.props.todos.filter(({ done }) => !done).length;
-    }
     completeHandler = key => {
         const updatedItems = this.props.todos.map(todo => {
             if (todo.key === key) {
@@ -29,8 +26,13 @@ class ToDoList extends Component {
         this.setState({ text: value });
     };
     addToDoHandler = () => {
-        const newToDo = { text: this.state.text, key: Date.now(), done: false };
-        if (newToDo.text !== '' || this.taskToComplete < 10) {
+        const { text } = this.state;
+        if (text !== '' && !this.props.isFullList) {
+            const newToDo = {
+                text,
+                key: Date.now(),
+                done: false
+            };
             this.props.onToDoAdded(newToDo);
         }
     };
@@ -49,7 +51,14 @@ class ToDoList extends Component {
                 <h3>ToDo List</h3>
                 <h2>Task to complete: {this.taskToComplete}</h2>
                 <input onChange={this.onInputChangeHandler} />
-                <button onClick={this.addToDoHandler}>ADD</button>
+                <button
+                    onClick={this.addToDoHandler}
+                    disabled={
+                        this.props.buttonDisabled || this.props.isFullList
+                    }
+                >
+                    ADD
+                </button>
                 <ul>{todos}</ul>
             </>
         );
@@ -58,15 +67,18 @@ class ToDoList extends Component {
 
 const mapStateToProps = state => {
     return {
-        todos: state.todos
+        todos: state.todos,
+        isFullList: state.todos.filter(({ done }) => !done).length >= 10,
+        buttonDisabled: state.buttonDisabled
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onToDoAdded: newToDo => dispatch(toDoActions.addToDo(newToDo)),
-        onMarkAsDoneToDo: toDoKey => dispatch(toDoActions.markAsDone(toDoKey)),
-        onToDoRemoved: toDoKey => dispatch(toDoActions.removeToDo(toDoKey))
+        onToDoAdded: newToDo => dispatch(toDoActions.initAddToDo(newToDo)),
+        onMarkAsDoneToDo: toDoKey =>
+            dispatch(toDoActions.initMarkAsDone(toDoKey)),
+        onToDoRemoved: toDoKey => dispatch(toDoActions.initRemoveToDo(toDoKey))
     };
 };
 
